@@ -1,4 +1,52 @@
+import { useState, useEffect } from 'react'
+
 const RatingOverview = ({ reviews, totalCustomers }) => {
+  const [animatedCount, setAnimatedCount] = useState(0)
+  const [animatedReviewCount, setAnimatedReviewCount] = useState(0)
+  
+  // Counting animation effect for total customers
+  useEffect(() => {
+    if (totalCustomers) {
+      let start = 0
+      const end = totalCustomers
+      const duration = 2000 // 2 seconds
+      const increment = end / (duration / 16) // 60fps
+      
+      const timer = setInterval(() => {
+        start += increment
+        if (start >= end) {
+          setAnimatedCount(end)
+          clearInterval(timer)
+        } else {
+          setAnimatedCount(Math.floor(start))
+        }
+      }, 16)
+      
+      return () => clearInterval(timer)
+    }
+  }, [totalCustomers])
+  
+  // Counting animation effect for reviews count
+  useEffect(() => {
+    if (reviews.length) {
+      let start = 0
+      const end = reviews.length
+      const duration = 1500 // 1.5 seconds
+      const increment = end / (duration / 16) // 60fps
+      
+      const timer = setInterval(() => {
+        start += increment
+        if (start >= end) {
+          setAnimatedReviewCount(end)
+          clearInterval(timer)
+        } else {
+          setAnimatedReviewCount(Math.floor(start))
+        }
+      }, 16)
+      
+      return () => clearInterval(timer)
+    }
+  }, [reviews.length])
   const averageRating = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length
   
   const ratingDistribution = [5, 4, 3, 2, 1].map(rating => ({
@@ -40,10 +88,10 @@ const RatingOverview = ({ reviews, totalCustomers }) => {
             </div>
             <StarRating rating={averageRating} size="text-2xl" />
             <p className="text-gray-700 mt-3 font-medium">Overall Rating</p>
-            <p className="text-sm text-gray-500">Based on {reviews.length} reviews</p>
+            <p className="text-sm text-gray-500">Based on {animatedReviewCount} reviews</p>
             <div className="mt-4 bg-orange-100 rounded-lg p-3">
               <p className="text-orange-800 font-medium text-sm">
-                {totalCustomers?.toLocaleString()} happy customers!
+                {animatedCount?.toLocaleString()} happy customers!
               </p>
             </div>
           </div>
