@@ -9,6 +9,7 @@ export default {
         'fade-in': 'fadeIn 1s ease-out',
         'bounce-slow': 'bounce 3s infinite',
         'pulse-slow': 'pulse 4s infinite',
+        'hover-lift': 'hoverLift 0.3s ease-out',
       },
       keyframes: {
         float: {
@@ -22,6 +23,10 @@ export default {
         fadeIn: {
           '0%': { opacity: '0', transform: 'scale(0.9)' },
           '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        hoverLift: {
+          '0%': { transform: 'translateY(0) scale(1)' },
+          '100%': { transform: 'translateY(-8px) scale(1.02)' },
         }
       }
     },

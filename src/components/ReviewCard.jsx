@@ -32,15 +32,15 @@ const ReviewCard = ({ review, index }) => {
   const displayText = isExpanded ? review.text : (shouldTruncate ? review.text.substring(0, 150) + '...' : review.text)
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+    <div className="bg-white rounded-2xl shadow-lg p-6 mb-6 border border-gray-100 hover:shadow-2xl hover:shadow-orange-100 transition-all duration-500 transform hover:-translate-y-2 hover:scale-[1.02] animate-fade-in group cursor-pointer" style={{animationDelay: `${index * 0.1}s`}}>
       <div className="flex gap-4">
-        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-lg">
+        <div className="w-12 h-12 bg-gradient-to-br from-orange-400 to-red-500 rounded-full flex items-center justify-center text-white font-bold text-lg flex-shrink-0 shadow-lg group-hover:shadow-xl group-hover:scale-110 transition-all duration-300">
           {review.name.charAt(0)}
         </div>
         
         <div className="flex-1">
           <div className="flex items-center justify-between mb-2">
-            <h4 className="font-bold text-gray-900 text-lg">{review.name}</h4>
+            <h4 className="font-bold text-gray-900 text-lg group-hover:text-orange-600 transition-colors duration-300">{review.name}</h4>
             {review.verified && (
               <span className="text-xs text-green-700 bg-green-100 px-3 py-1 rounded-full font-medium flex items-center gap-1">
                 ✅ Verified Purchase
@@ -56,8 +56,8 @@ const ReviewCard = ({ review, index }) => {
             </p>
           )}
           
-          <div className="bg-gray-50 rounded-xl p-4 mb-4">
-            <p className="text-gray-700 leading-relaxed">
+          <div className="bg-gray-50 rounded-xl p-4 mb-4 group-hover:bg-orange-50 transition-colors duration-300">
+            <p className="text-gray-700 leading-relaxed group-hover:text-gray-800 transition-colors duration-300">
               {displayText}
             </p>
           </div>
