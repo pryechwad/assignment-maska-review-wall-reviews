@@ -1,8 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const ReviewFilters = ({ onFilterChange, onSortChange, totalReviews }) => {
   const [activeFilter, setActiveFilter] = useState('all')
   const [activeSort, setActiveSort] = useState('newest')
+  const [animatedCounts, setAnimatedCounts] = useState({})
 
   const filters = [
     { id: 'all', label: 'All Reviews', count: totalReviews, icon: '📝' },
@@ -11,6 +12,28 @@ const ReviewFilters = ({ onFilterChange, onSortChange, totalReviews }) => {
     { id: '3', label: '3 Stars', count: Math.floor(totalReviews * 0.08), icon: '⭐' },
     { id: 'verified', label: 'Verified Only', count: Math.floor(totalReviews * 0.85), icon: '✅' }
   ]
+
+  // Animate filter counts
+  useEffect(() => {
+    filters.forEach((filter, index) => {
+      let start = 0
+      const end = filter.count
+      const duration = 1500 + (index * 200) // Stagger animations
+      const increment = end / (duration / 16)
+      
+      const timer = setInterval(() => {
+        start += increment
+        if (start >= end) {
+          setAnimatedCounts(prev => ({ ...prev, [filter.id]: end }))
+          clearInterval(timer)
+        } else {
+          setAnimatedCounts(prev => ({ ...prev, [filter.id]: Math.floor(start) }))
+        }
+      }, 16)
+      
+      return () => clearInterval(timer)
+    })
+  }, [totalReviews])
 
   const sortOptions = [
     { id: 'newest', label: 'Newest First' },
@@ -56,7 +79,7 @@ const ReviewFilters = ({ onFilterChange, onSortChange, totalReviews }) => {
               >
                 <div className="text-lg mb-1">{filter.icon}</div>
                 <div className="text-xs font-medium">{filter.label}</div>
-                <div className="text-xs opacity-75">({filter.count})</div>
+                <div className="text-xs opacity-75">({animatedCounts[filter.id] || 0})</div>
               </button>
             ))}
           </div>
